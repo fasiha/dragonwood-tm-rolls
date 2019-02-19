@@ -1,0 +1,25 @@
+{
+  "name": "dragonwood-rolls",
+  "version": "1.0.0",
+  "description": "Sum-of-dice-rolls probabilities table for Gamewright's Dragonwood™",
+  "main": "index.js",
+  "scripts": {
+    "test": "cp README.template.md README.md && node index.js >> README.md"
+  },
+  "keywords": [
+    "dice",
+    "die",
+    "probability",
+    "odds",
+    "Dragonwood"
+  ],
+  "author": "Ahmed Fasih",
+  "license": "Unlicense",
+  "devDependencies": {
+    "@types/node": "^11.9.4",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "cartesian-product-generator": "^1.1.0"
+  }
+}
