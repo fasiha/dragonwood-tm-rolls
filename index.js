@@ -46,30 +46,28 @@ var prob2odds = function (p) { return p > 0.5 ? [1 / (1 - p) - 1, 1] : [1, 1 / p
 function enumerateAllDices(sides, maxDice) {
     var e_1, _a;
     var maxSide = max(sides);
+    var repeatSides = Array.from(Array(maxDice), function (_) { return sides; });
     var frequencies = Array.from(Array(maxDice), function (_, i) { return zeros(1 + maxSide * (i + 1)); });
-    {
-        var repeatSides = Array.from(Array(maxDice), function (_) { return sides; });
+    try {
+        for (var _b = __values(cartesian_product_generator_1.product.apply(void 0, __spread(repeatSides))), _c = _b.next(); !_c.done; _c = _b.next()) {
+            var x = _c.value;
+            cumsum(x).forEach(function (sum, i) { return frequencies[i][sum]++; });
+        }
+    }
+    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+    finally {
         try {
-            for (var _b = __values(cartesian_product_generator_1.product.apply(void 0, __spread(repeatSides))), _c = _b.next(); !_c.done; _c = _b.next()) {
-                var x = _c.value;
-                cumsum(x).forEach(function (sum, i) { return frequencies[i][sum]++; });
-            }
+            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
         }
-        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-        finally {
-            try {
-                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
-            }
-            finally { if (e_1) throw e_1.error; }
-        }
+        finally { if (e_1) throw e_1.error; }
     }
     return frequencies;
 }
 /**
  * This deserves some explanation. For speed, I use *an array* to map the sum of a roll to its frequency (number of
- * times occurred). That happened above. *This function* converts that array, where each index is the sum and each value
- * the frequency of occurrence, to an array of objects with `sum` and `prob` entries, where `prob` indicates the
- * probability (between 0 and 1 inclusive) that the sum of dice rolls is **at least** `sum`.
+ * times occurred). That happened above in `enumerateAllDices`. *This function* converts that array, where each index is
+ * the sum and each value the frequency of occurrence, to an array of objects with `sum` and `prob` entries, where
+ * `prob` indicates the probability (between 0 and 1 inclusive) that the sum of dice rolls is **at least** `sum`.
  * @param sumFreqs array where each value is the number of times its index was seen
  */
 function sumFreqsToProbOfAtleast(sumFreqs) {
@@ -85,9 +83,6 @@ function enumerate(sides, maxDice) {
     return dice2Frequencies;
 }
 exports.enumerate = enumerate;
-var dragonwoodDiceSides = [1, 2, 2, 3, 3, 4];
-var maxDice = 6;
-var dice2Prob = enumerate(dragonwoodDiceSides, maxDice);
 function print(dice2Freqs) {
     var e_2, _a, e_3, _b;
     try {
@@ -118,4 +113,9 @@ function print(dice2Freqs) {
     }
 }
 exports.print = print;
-print(dice2Prob);
+if (require.main === module) {
+    var dragonwoodDiceSides = [1, 2, 2, 3, 3, 4];
+    var maxDice = 6;
+    var dice2Prob = enumerate(dragonwoodDiceSides, maxDice);
+    print(dice2Prob);
+}

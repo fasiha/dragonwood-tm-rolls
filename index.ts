@@ -14,11 +14,9 @@ const prob2odds = (p: number) => p > 0.5 ? [1 / (1 - p) - 1, 1] : [1, 1 / p - 1]
 // I want to let this be very barebones and user-unfriendly to preserve maximal speed.
 function enumerateAllDices(sides: number[], maxDice: number) {
   const maxSide = max(sides);
+  const repeatSides = Array.from(Array(maxDice), _ => sides);
   let frequencies = Array.from(Array(maxDice), (_, i) => zeros(1 + maxSide * (i + 1)));
-  {
-    const repeatSides = Array.from(Array(maxDice), _ => sides);
-    for (let x of product(...repeatSides)) { cumsum(x).forEach((sum, i) => frequencies[i][sum]++); }
-  }
+  for (let x of product(...repeatSides)) { cumsum(x).forEach((sum, i) => frequencies[i][sum]++); }
   return frequencies;
 }
 
@@ -28,9 +26,9 @@ export type SumCumlProb = {
 };
 /**
  * This deserves some explanation. For speed, I use *an array* to map the sum of a roll to its frequency (number of
- * times occurred). That happened above. *This function* converts that array, where each index is the sum and each value
- * the frequency of occurrence, to an array of objects with `sum` and `prob` entries, where `prob` indicates the
- * probability (between 0 and 1 inclusive) that the sum of dice rolls is **at least** `sum`.
+ * times occurred). That happened above in `enumerateAllDices`. *This function* converts that array, where each index is
+ * the sum and each value the frequency of occurrence, to an array of objects with `sum` and `prob` entries, where
+ * `prob` indicates the probability (between 0 and 1 inclusive) that the sum of dice rolls is **at least** `sum`.
  * @param sumFreqs array where each value is the number of times its index was seen
  */
 function sumFreqsToProbOfAtleast(sumFreqs: number[]): SumCumlProb[] {
@@ -46,10 +44,6 @@ export function enumerate(sides: number[], maxDice: number) {
   return dice2Frequencies;
 }
 
-const dragonwoodDiceSides = [1, 2, 2, 3, 3, 4];
-const maxDice = 6;
-let dice2Prob = enumerate(dragonwoodDiceSides, maxDice);
-
 export function print(dice2Freqs: Map<number, SumCumlProb[]>) {
   for (let [k, v] of dice2Freqs) {
     console.log(`## ${k} dice`);
@@ -59,4 +53,10 @@ export function print(dice2Freqs: Map<number, SumCumlProb[]>) {
     }
   }
 }
-print(dice2Prob);
+
+if (require.main === module) {
+  const dragonwoodDiceSides = [1, 2, 2, 3, 3, 4];
+  const maxDice = 6;
+  let dice2Prob = enumerate(dragonwoodDiceSides, maxDice);
+  print(dice2Prob);
+}
