@@ -9,10 +9,12 @@ But I got tired of using [AnyDice](https://anydice.com) to compute probabilities
 
 > Tech notes. To see the probabilities tables, scroll down. If for some reason you want to run this software to recreate the tables below, make sure you install [Git](https://git-scm.com) and [Node.js](https://nodejs.org). Then in your command line (Terminal app in macOS, Command Line Prompt in Windows, xterm in Linux, etc.), run the following: `git clone https://github.com/fasiha/dragonwood-tm-rolls.git && cd dragonwood-tm-rolls && npm i && npm run build && node index.js`. This will (1) clone (copy) this Git repo from GitHub to your computer (`git ...`), (2) change into the newly-created directory (`cd ...`), (3) download the Node.js dependency (viz., my Cartesian product library, via `npm i`), (4) transpiles the TypeScript source to JavaScript that Node can run (`npm run ...`)), and finally, (5) run the script in Node to print out the table below.
 
+
 ## 1 dice
 - ≥2, 83.3% or 5：1 (rerolling? Then 97.2% or 35：1)
 - ≥3, 50.0% or 1：1 (rerolling? Then 65.0% or 1.9：1)
 - ≥4, 16.7% or 1：5 (rerolling? Then 21.9% or 1：3.6)
+
 ## 2 dice
 - ≥3, 97.2% or 35：1 (rerolling? Then 99.5% or 215：1)
 - ≥4, 86.1% or 6.2：1 (rerolling? Then 96.8% or 29.9：1)
@@ -20,6 +22,7 @@ But I got tired of using [AnyDice](https://anydice.com) to compute probabilities
 - ≥6, 36.1% or 1：1.8 (rerolling? Then 54.4% or 1.2：1)
 - ≥7, 13.9% or 1：6.2 (rerolling? Then 23.1% or 1：3.3)
 - ≥8, 2.8% or 1：35 (rerolling? Then 4.7% or 1：20.2)
+
 ## 3 dice
 - ≥4, 99.5% or 215：1 (rerolling? Then 99.9% or 1295：1)
 - ≥5, 96.8% or 29.9：1 (rerolling? Then 99.3% or 143：1)
@@ -30,6 +33,7 @@ But I got tired of using [AnyDice](https://anydice.com) to compute probabilities
 - ≥10, 11.6% or 1：7.6 (rerolling? Then 22.3% or 1：3.5)
 - ≥11, 3.2% or 1：29.9 (rerolling? Then 6.9% or 1：13.6)
 - ≥12, 0.5% or 1：215 (rerolling? Then 1.0% or 1：97)
+
 ## 4 dice
 - ≥5, 99.9% or 1295：1 (rerolling? Then 100.0% or 7775：1)
 - ≥6, 99.3% or 143：1 (rerolling? Then 99.9% or 705.9：1)
@@ -43,6 +47,7 @@ But I got tired of using [AnyDice](https://anydice.com) to compute probabilities
 - ≥14, 3.2% or 1：30.6 (rerolling? Then 7.7% or 1：11.9)
 - ≥15, 0.7% or 1：143 (rerolling? Then 1.9% or 1：52.3)
 - ≥16, 0.1% or 1：1295 (rerolling? Then 0.2% or 1：441.9)
+
 ## 5 dice
 - ≥6, 100.0% or 7775：1 (rerolling? Then 100.0% or 46655：1)
 - ≥7, 99.9% or 705.9：1 (rerolling? Then 100.0% or 3587.9：1)
@@ -59,6 +64,7 @@ But I got tired of using [AnyDice](https://anydice.com) to compute probabilities
 - ≥18, 0.8% or 1：126.5 (rerolling? Then 2.5% or 1：39.8)
 - ≥19, 0.1% or 1：705.9 (rerolling? Then 0.5% or 1：199.5)
 - ≥20, 0.0% or 1：7775 (rerolling? Then 0.1% or 1：1916.4)
+
 ## 6 dice
 - ≥7, 100.0% or 46655：1 (rerolling? Then 100.0% or 279935：1)
 - ≥8, 100.0% or 3587.9：1 (rerolling? Then 100.0% or 18661.4：1)

@@ -182,7 +182,7 @@ function print(dice2Freqs, withReroll) {
     try {
         for (var dice2Freqs_1 = __values(dice2Freqs), dice2Freqs_1_1 = dice2Freqs_1.next(); !dice2Freqs_1_1.done; dice2Freqs_1_1 = dice2Freqs_1.next()) {
             var _c = __read(dice2Freqs_1_1.value, 2), numDice = _c[0], table = _c[1];
-            console.log("## " + numDice + " dice");
+            console.log("\n## " + numDice + " dice");
             var tableReroll = [];
             if (withReroll) {
                 tableReroll = withReroll.get(numDice) || [];

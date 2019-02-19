@@ -69,7 +69,7 @@ const numToPercent = (n: number) => ((Math.round(n * 1000) / 1000) * 100).toFixe
 const numToOdds = (n: number) => prob2odds(n).map(x => Math.round(x * 10) / 10).join('：');
 export function print(dice2Freqs: Map<number, SumCumlProb[]>, withReroll?: Map<number, SumCumlProb[]>) {
   for (let [numDice, table] of dice2Freqs) {
-    console.log(`## ${numDice} dice`);
+    console.log(`\n## ${numDice} dice`);
 
     let tableReroll: SumCumlProb[] = [];
     if (withReroll) { tableReroll = withReroll.get(numDice) || []; } // TypeScript pacification
