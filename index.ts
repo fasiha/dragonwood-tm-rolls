@@ -7,16 +7,37 @@ const cumsum = (v: number[]) => v.reduce((o, n, i) => o.concat((o[i - 1] || 0) +
 const cumsumRight = (v: number[]) => {
   for (let i = v.length - 2; i >= 0; --i) { v[i] += v[i + 1]; }
 };
+function* enumerate<T>(v: T[]|IterableIterator<T>, n: number = 0): IterableIterator<[number, T]> {
+  for (let x of v) { yield [n++, x]; }
+}
 
 // Hat tip: https://math.stackexchange.com/a/1469254/81266
 const prob2odds = (p: number) => p > 0.5 ? [1 / (1 - p) - 1, 1] : [1, 1 / p - 1];
 
+function omitSmallest(v: number[]) {
+  let minidx = 0;
+  let min = v[minidx];
+  for (let i = 1; i < v.length; i++) {
+    if (v[i] < min) {
+      min = v[i];
+      minidx = i;
+    }
+  }
+  v.splice(minidx, 1);
+  return v;
+}
+
 // I want to let this be very barebones and user-unfriendly to preserve maximal speed.
-function enumerateAllDices(sides: number[], maxDice: number) {
+function enumerateAllDices(sides: number[], maxDice: number, rerollOne: boolean) {
+  const fakeMaxDice = maxDice + (rerollOne ? 1 : 0);
   const maxSide = max(sides);
-  const repeatSides = Array.from(Array(maxDice), _ => sides);
   let frequencies = Array.from(Array(maxDice), (_, i) => zeros(1 + maxSide * (i + 1)));
-  for (let x of product(...repeatSides)) { cumsum(x).forEach((sum, i) => frequencies[i][sum]++); }
+  const repeatSides = Array.from(Array(fakeMaxDice), _ => sides);
+  if (rerollOne) {
+    for (let x of product(...repeatSides)) { cumsum(omitSmallest(x)).forEach((sum, i) => frequencies[i][sum]++); }
+  } else {
+    for (let x of product(...repeatSides)) { cumsum(x).forEach((sum, i) => frequencies[i][sum]++); }
+  }
   return frequencies;
 }
 
@@ -37,19 +58,29 @@ function sumFreqsToProbOfAtleast(sumFreqs: number[]): SumCumlProb[] {
   return cuml.map(x => x / cuml[0]).map((prob, sum) => ({sum, prob})).slice(1);
 };
 
-export function enumerate(sides: number[], maxDice: number) {
+export function enumerateDice(sides: number[], maxDice: number, rerollOne = false) {
   let dice2Frequencies: Map<number, SumCumlProb[]> = new Map([]);
-  enumerateAllDices(sides, maxDice)
+  enumerateAllDices(sides, maxDice, rerollOne)
       .forEach((sumFreqs, didx) => dice2Frequencies.set(didx + 1, sumFreqsToProbOfAtleast(sumFreqs)))
   return dice2Frequencies;
 }
 
-export function print(dice2Freqs: Map<number, SumCumlProb[]>) {
-  for (let [k, v] of dice2Freqs) {
-    console.log(`## ${k} dice`);
-    for (let {sum, prob} of v) {
-      console.log(`- ≥${sum}, ${((Math.round(prob * 1000) / 1000) * 100).toFixed(1)}% or ${
-          prob2odds(prob).map(x => Math.round(x * 10) / 10).join('：')}`);
+const numToPercent = (n: number) => ((Math.round(n * 1000) / 1000) * 100).toFixed(1);
+const numToOdds = (n: number) => prob2odds(n).map(x => Math.round(x * 10) / 10).join('：');
+export function print(dice2Freqs: Map<number, SumCumlProb[]>, withReroll?: Map<number, SumCumlProb[]>) {
+  for (let [numDice, table] of dice2Freqs) {
+    console.log(`## ${numDice} dice`);
+
+    let tableReroll: SumCumlProb[] = [];
+    if (withReroll) { tableReroll = withReroll.get(numDice) || []; } // TypeScript pacification
+
+    for (let [tableIdx, {sum, prob}] of enumerate(table)) {
+      if (prob >= 1) { continue; }
+      let probReroll = -1;
+      if (withReroll) { probReroll = tableReroll[tableIdx].prob; }
+      console.log(
+          `- ≥${sum}, ${numToPercent(prob)}% or ${numToOdds(prob)}` +
+          (probReroll >= 0 ? ` (rerolling? Then ${numToPercent(probReroll)}% or ${numToOdds(probReroll)})` : ''));
     }
   }
 }
@@ -57,6 +88,7 @@ export function print(dice2Freqs: Map<number, SumCumlProb[]>) {
 if (require.main === module) {
   const dragonwoodDiceSides = [1, 2, 2, 3, 3, 4];
   const maxDice = 6;
-  let dice2Prob = enumerate(dragonwoodDiceSides, maxDice);
-  print(dice2Prob);
+  const reroll = false;
+  let dice2prob = enumerateDice(dragonwoodDiceSides, maxDice, reroll);
+  print(dice2prob, enumerateDice(dragonwoodDiceSides, maxDice, !reroll));
 }
