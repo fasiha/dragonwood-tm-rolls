@@ -7,5 +7,5 @@ But I got tired of using [AnyDice](https://anydice.com) to compute probabilities
 
 (The dice have six sides: 1, 2, 2, 3, 3, 4.)
 
-The table follows.
+> Tech notes. To see the probabilities tables, scroll down. If for some reason you want to run this software to recreate the tables below, make sure you install [Git](https://git-scm.com) and [Node.js](https://nodejs.org). Then in your command line (Terminal app in macOS, Command Line Prompt in Windows, xterm in Linux, etc.), run the following: `git clone https://github.com/fasiha/dragonwood-tm-rolls.git && cd dragonwood-tm-rolls && npm i && npm run build && node index.js`. This will (1) clone (copy) this Git repo from GitHub to your computer (`git ...`), (2) change into the newly-created directory (`cd ...`), (3) download the Node.js dependency (viz., my Cartesian product library, via `npm i`), (4) transpiles the TypeScript source to JavaScript that Node can run (`npm run ...`)), and finally, (5) run the script in Node to print out the table below.
 

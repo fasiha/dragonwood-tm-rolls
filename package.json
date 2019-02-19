@@ -4,7 +4,8 @@
   "description": "Sum-of-dice-rolls probabilities table for Gamewright's Dragonwood™",
   "main": "index.js",
   "scripts": {
-    "test": "cp README.template.md README.md && node index.js >> README.md"
+    "build": "tsc -p .",
+    "run": "npm run build && cp README.template.md README.md && node index.js >> README.md"
   },
   "keywords": [
     "dice",
